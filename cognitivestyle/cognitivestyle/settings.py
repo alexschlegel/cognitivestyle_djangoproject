@@ -11,22 +11,30 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+import os, platform
+
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS, STATICFILES_FINDERS
+
+#where are we?
+ME_DEV = ['grendel']
+ME = platform.node()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
+SECURE_DIR = os.path.join(BASE_DIR,'secret')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'u=7+y7!r4eosy49&xuxl_5xdgzd^#8!2ykyzf_ac(7j1d@dj+w'
+SECRET_KEY_LOCATION = os.path.join(SECURE_DIR,'secret_key')
+with open(SECRET_KEY_LOCATION) as file:
+    SECRET_KEY = file.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = ME in ME_DEV
 
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS = [
+    'kraemerlab.dartmouth.edu',
+    'localhost',
+]
 
 # Application definition
 
@@ -37,6 +45,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'compressor',
+    'cognitivestyleapp',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,7 +65,10 @@ ROOT_URLCONF = 'cognitivestyle.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'cognitivestyleapp', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,11 +87,33 @@ WSGI_APPLICATION = 'cognitivestyle.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+if ME in ME_DEV:
+    DB_ENGINE = 'django.db.backends.mysql'
+    DB_HOST = 'localhost'
+    DB_PORT = '3306'
+    DB_NAME = 'cognitivestyledb'
+    DB_USER = 'alex'
+    DB_PW = 'kniggit'
+else:
+    DB_ENGINE = 'django.db.backends.mysql'
+    DB_HOST = 'localhost'
+    DB_PORT = '3306'
+    DB_NAME = 'cognitivestyledb'
+    DB_USER = 'kraemerlab'
+    
+    DB_PW_LOCATION = os.path.join(SECURE_DIR,'mysql_db_pw')
+    with open(DB_PW_LOCATION) as file:
+        DB_PW = file.read().strip()
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+	'default': {
+		'ENGINE': DB_ENGINE,
+		'NAME': DB_NAME,
+		'USER': DB_USER,
+		'PASSWORD': DB_PW,
+		'HOST': DB_HOST,
+		'PORT': DB_PORT
+	}
 }
 
 
@@ -98,5 +133,32 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+STATICFILES_FINDERS += (
+    'compressor.finders.CompressorFinder',
+)
+
+# compressor
+COMPRESS_PRECOMPILERS = (
+    ('text/x-sass', 'sass "{infile}" "{outfile}"'),
+    ('text/x-scss', 'sass --scss --compass "{infile}" "{outfile}"'),
+    ('text/coffeescript', 'coffee --compile --stdio'),
+)
+
+COMPRESS_CSS_FILTERS = (
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSMinFilter',
+)
+
+COMPRESS_JS_FILTERS = (
+    'compressor.filters.jsmin.JSMinFilter',
+)
+
+if ME in ME_DEV:
+    COMPRESS_ENABLED = False
+    COMPRESS_OFFLINE = False
+else:
+    COMPRESS_ENABLED = True
+    COMPRESS_OFFLINE = True
