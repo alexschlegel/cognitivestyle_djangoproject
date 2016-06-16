@@ -1,0 +1,74 @@
+##uninstall ruby
+#sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion nodejs python3-dev
+##on wertheimer I had to do:
+#	sudo apt-get --purge remove npm
+#	sudo apt-get --purge remove node
+#	sudo apt-get --purge remove nodejs-legacy
+#	sudo apt-get --purge remove nodejs
+#	sudo apt-get install nodejs-legacy
+#	sudo apt-get install npm
+##on kraemerlab:
+#	sudo apt-get install python-software-properties
+#	sudo add-apt-repository --yes ppa:chris-lea/node.js
+#	sudo apt-get update
+#	sudo apt-get upgrade
+#	sudo apt-get install nodejs
+##have to sudo su this stuff on the production server
+#\curl -sSL https://get.rvm.io | bash -s stable --ruby
+# echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
+##restart terminal
+#gem install sass --pre
+#gem install compass --pre
+
+##install coffeescript
+#sudo npm install -g coffee-script
+##OR (shouldn't need this with proper nodejs (?))
+#wget --no-check-certificate https://registry.npmjs.org/coffee-script/-/coffee-script-1.10.0.tgz
+#npm install -g coffee-script-1.10.0.tgz
+
+
+##database
+#postgresql==9.1
+#postgresql-server-dev-9.1 (so pip install psycopg2 will work)
+
+##modify database configuration
+#sudo nano /etc/postgresql/9.1/main/postgresql.conf
+#	client_encoding = 'UTF8'
+#	default_transaction_isolation: 'read committed' (should be default)
+#	timezone = 'UTC'
+##restart the server
+#sudo service postgresql restart
+
+##create a postgres superuser account
+#sudo -u postgres createuser <linux username>
+##create the database
+#createdb mwlearn
+
+#python==3.3
+#pip (for python 3)
+
+##for more recent python version:
+#sudo add-apt-repository ppa:fkrull/deadsnakes
+#sudo apt-get update
+#sudo apt-get install python3.5 python3.5-dev
+
+Django==1.8.5
+#psycopg2==2.5.1 # PostGreSQL python hook
+mysqlclient==1.3.6
+#South==1.0.1 # django database migration
+beautifulsoup4==4.3.2 # for django_compressor
+versiontools==1.9.1 # for django_compressor
+html5lib==0.999 # for django_compressor
+cssmin==0.2.0 # for django_compressor
+slimit==0.8.1 # for django_compressor
+##so pip install git+git://github.com/jezdez/django_compressor
+#django_compressor==dev #"dev" to supports python 3
+django_compressor==1.5
+pymongo==3.2.1
+
+##deployment
+	##static files
+	#python manage.py collectstatic
+	##database migration to deployment server
+	#python manage.py syncdb
+	#python manage.py migrate

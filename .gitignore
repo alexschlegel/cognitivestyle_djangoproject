@@ -1,0 +1,7 @@
+cognitivestyleenv/
+__pycache__/
+*.py[cod]
+secret/
+.sass-cache/
+.idea/
+**/static/CACHE/
