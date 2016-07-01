@@ -16,7 +16,7 @@ import os, platform
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS, STATICFILES_FINDERS
 
 #where are we?
-ME_DEV = ['grendel']
+ME_DEV = ['grendel', 'chiron']
 ME = platform.node()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

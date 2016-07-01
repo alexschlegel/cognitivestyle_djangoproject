@@ -1,5 +1,13 @@
 ##uninstall ruby
-#sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion nodejs python3-dev
+
+#non-RHEL
+#sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion nodejs python3-dev libmysqlclient-dev
+##RHEL:
+##skip libreadline6 libreadline6-dev libsqlite3-dev sqlite3 zlib1g zlib1g-dev
+#sudo yum install openssl curl git-core autoconf automake libtool bison subversion nodejs
+#sudo yum install openssl-devel libyaml-devel libxml2-devel libxslt-devel glibc-devel ncurses-devel python34-devel mariadb-devel
+# sudo yum groupinstall 'Development Tools'
+
 ##on wertheimer I had to do:
 #	sudo apt-get --purge remove npm
 #	sudo apt-get --purge remove node
@@ -13,10 +21,15 @@
 #	sudo apt-get update
 #	sudo apt-get upgrade
 #	sudo apt-get install nodejs
+
+##on kraemerlab, try just:
+#sudo yum install gem
+##otherwise:
 ##have to sudo su this stuff on the production server
-#\curl -sSL https://get.rvm.io | bash -s stable --ruby
+#sudo \curl -sSL https://get.rvm.io | sudo bash -s stable --ruby
 # echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
 ##restart terminal
+
 #gem install sass --pre
 #gem install compass --pre
 
