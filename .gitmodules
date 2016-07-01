@@ -1,3 +1,5 @@
 [submodule "cognitivestyle/cognitivestyleapp"]
 	path = cognitivestyle/cognitivestyleapp
 	url = https://github.com/alexschlegel/cognitivestyleapp.git
+        branch = master
+
