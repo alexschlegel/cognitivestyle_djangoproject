@@ -30,8 +30,9 @@
 # echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
 ##restart terminal
 
-#gem install sass --pre
 #gem install compass --pre
+##shouldn't need to do this, since compass requires (and installs) sass
+##gem install sass --pre
 
 ##install coffeescript
 #sudo npm install -g coffee-script

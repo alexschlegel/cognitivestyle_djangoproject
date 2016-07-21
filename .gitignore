@@ -4,4 +4,3 @@ __pycache__/
 secret/
 .sass-cache/
 .idea/
-**/static/CACHE/

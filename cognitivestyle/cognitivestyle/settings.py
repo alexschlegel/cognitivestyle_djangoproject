@@ -156,7 +156,8 @@ COMPRESS_JS_FILTERS = (
     'compressor.filters.jsmin.JSMinFilter',
 )
 
-if ME in ME_DEV:
+#if ME in ME_DEV:
+if False:
     COMPRESS_ENABLED = False
     COMPRESS_OFFLINE = False
 else:
